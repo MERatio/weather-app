@@ -1,15 +1,21 @@
 import React from 'react';
 import './App.css';
+import Form from './components/Form';
 
 class App extends React.Component {
 	constructor() {
 		super();
 		this.state = {
 			cityWeatherData: {},
+			formData: {
+				name: '',
+			},
 		};
 		this.getCityWeatherData = this.getCityWeatherData.bind(this);
 		this.processCityWeatherData = this.processCityWeatherData.bind(this);
 		this.setWeatherData = this.setWeatherData.bind(this);
+		this.handleInputChange = this.handleInputChange.bind(this);
+		this.handleFormSubmit = this.handleFormSubmit.bind(this);
 	}
 
 	componentDidMount() {
@@ -50,8 +56,32 @@ class App extends React.Component {
 		}
 	}
 
+	handleInputChange(e) {
+		const target = e.target;
+		const value = target.value;
+		const name = target.name;
+		this.setState({
+			formData: {
+				[name]: value,
+			},
+		});
+	}
+
+	handleFormSubmit(e) {
+		this.setWeatherData(this.state.formData.name);
+		e.preventDefault();
+	}
+
 	render() {
-		return <h1>Weather App</h1>;
+		const { formData } = this.state;
+
+		return (
+			<Form
+				data={formData}
+				handleInputChange={this.handleInputChange}
+				handleFormSubmit={this.handleFormSubmit}
+			/>
+		);
 	}
 }
 
