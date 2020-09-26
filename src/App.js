@@ -11,16 +11,32 @@ class App extends React.Component {
 			formData: {
 				name: '',
 			},
+			scale: 'c',
 		};
 		this.getCityWeatherData = this.getCityWeatherData.bind(this);
 		this.processCityWeatherData = this.processCityWeatherData.bind(this);
 		this.setWeatherData = this.setWeatherData.bind(this);
 		this.handleInputChange = this.handleInputChange.bind(this);
 		this.handleFormSubmit = this.handleFormSubmit.bind(this);
+		this.handleScaleChange = this.handleScaleChange.bind(this);
 	}
 
 	componentDidMount() {
 		this.setWeatherData('quezon city');
+	}
+
+	_toCelsius(f) {
+		return ((f - 32) * 5) / 9;
+	}
+
+	_toFahrenheit(c) {
+		return (c * 9) / 5 + 32;
+	}
+
+	_tryConvert(temp, convert) {
+		const output = convert(temp);
+		const rounded = Math.round(output * 1000) / 1000;
+		return rounded;
 	}
 
 	async getCityWeatherData(cityName) {
@@ -36,10 +52,14 @@ class App extends React.Component {
 	}
 
 	processCityWeatherData(weatherData) {
+		const temp = weatherData.main.temp;
+		const scale = this.state.scale;
+		const newTemp =
+			scale === 'c' ? temp : this._tryConvert(temp, this._toFahrenheit);
 		return {
 			name: weatherData.name,
 			country: weatherData.sys.country,
-			temp: weatherData.main.temp,
+			temp: newTemp,
 			description: weatherData.weather[0].description,
 		};
 	}
@@ -72,8 +92,29 @@ class App extends React.Component {
 		e.preventDefault();
 	}
 
+	handleScaleChange(e) {
+		const isScale = Array.from(e.target.classList).includes('scale');
+		if (!isScale) return;
+		const temp = this.state.cityWeatherData.temp;
+		const clickedScale = e.target.id;
+		const newScale = clickedScale === 'c' ? 'c' : 'f';
+		const newTemp =
+			newScale === 'c'
+				? this._tryConvert(temp, this._toCelsius)
+				: this._tryConvert(temp, this._toFahrenheit);
+		this.setState((prevState) => {
+			return {
+				cityWeatherData: {
+					...prevState.cityWeatherData,
+					temp: newTemp,
+				},
+				scale: newScale,
+			};
+		});
+	}
+
 	render() {
-		const { cityWeatherData, formData } = this.state;
+		const { cityWeatherData, formData, scale } = this.state;
 
 		return (
 			<div className="app">
@@ -82,7 +123,11 @@ class App extends React.Component {
 					handleInputChange={this.handleInputChange}
 					handleFormSubmit={this.handleFormSubmit}
 				/>
-				<Card data={cityWeatherData} />
+				<Card
+					data={cityWeatherData}
+					scale={scale}
+					handleScaleChange={this.handleScaleChange}
+				/>
 			</div>
 		);
 	}
