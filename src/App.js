@@ -17,11 +17,15 @@ class App extends React.Component {
 	}
 
 	async getCityWeatherData(cityName) {
-		const apiKey = process.env.REACT_APP_OPENWEATHER_API_KEY;
-		const url = `https://api.openweathermap.org/data/2.5/weather?q=${cityName}&appid=${apiKey}&units=metric`;
-		const response = await fetch(url, { mode: 'cors' });
-		const cityWeatherData = await response.json();
-		return cityWeatherData;
+		try {
+			const apiKey = process.env.REACT_APP_OPENWEATHER_API_KEY;
+			const url = `https://api.openweathermap.org/data/2.5/weather?q=${cityName}&appid=${apiKey}&units=metric`;
+			const response = await fetch(url, { mode: 'cors' });
+			const cityWeatherData = await response.json();
+			return cityWeatherData;
+		} catch (err) {
+			console.log(err);
+		}
 	}
 
 	processCityWeatherData(weatherData) {
@@ -34,12 +38,16 @@ class App extends React.Component {
 	}
 
 	async setWeatherData(cityName) {
-		const cityWeatherData = await this.getCityWeatherData(cityName);
-		const processedCityWeatherData = this.processCityWeatherData(
-			cityWeatherData
-		);
-		this.setState({ cityWeatherData: processedCityWeatherData });
-		console.log(this.state.cityWeatherData);
+		try {
+			const cityWeatherData = await this.getCityWeatherData(cityName);
+			const processedCityWeatherData = this.processCityWeatherData(
+				cityWeatherData
+			);
+			this.setState({ cityWeatherData: processedCityWeatherData });
+			console.log(this.state.cityWeatherData);
+		} catch (err) {
+			console.log(err);
+		}
 	}
 
 	render() {
