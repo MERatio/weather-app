@@ -2,6 +2,7 @@ import React from 'react';
 import './App.css';
 import Form from './components/Form';
 import Card from './components/Card';
+import Spinner from './components/Spinner';
 
 class App extends React.Component {
 	constructor() {
@@ -12,6 +13,7 @@ class App extends React.Component {
 				name: '',
 			},
 			scale: 'c',
+			isDataReady: false,
 		};
 		this.getCityWeatherData = this.getCityWeatherData.bind(this);
 		this.processCityWeatherData = this.processCityWeatherData.bind(this);
@@ -66,11 +68,17 @@ class App extends React.Component {
 
 	async setWeatherData(cityName) {
 		try {
+			this.setState({ isDataReady: false });
 			const cityWeatherData = await this.getCityWeatherData(cityName);
 			const processedCityWeatherData = this.processCityWeatherData(
 				cityWeatherData
 			);
-			this.setState({ cityWeatherData: processedCityWeatherData });
+			setTimeout(() => {
+				this.setState({
+					cityWeatherData: processedCityWeatherData,
+					isDataReady: true,
+				});
+			}, 500);
 		} catch (err) {
 			console.log(err);
 		}
@@ -114,7 +122,16 @@ class App extends React.Component {
 	}
 
 	render() {
-		const { cityWeatherData, formData, scale } = this.state;
+		const { cityWeatherData, formData, scale, isDataReady } = this.state;
+		const output = isDataReady ? (
+			<Card
+				data={cityWeatherData}
+				scale={scale}
+				handleScaleChange={this.handleScaleChange}
+			/>
+		) : (
+			<Spinner />
+		);
 
 		return (
 			<div className="app">
@@ -123,11 +140,7 @@ class App extends React.Component {
 					handleInputChange={this.handleInputChange}
 					handleFormSubmit={this.handleFormSubmit}
 				/>
-				<Card
-					data={cityWeatherData}
-					scale={scale}
-					handleScaleChange={this.handleScaleChange}
-				/>
+				<div className="output abs-center">{output}</div>
 			</div>
 		);
 	}

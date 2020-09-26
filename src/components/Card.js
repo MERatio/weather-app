@@ -9,7 +9,7 @@ function Card(props) {
 	const fahrenheitClass = `scale ${scale === 'f' ? 'activeScale' : ''}`;
 
 	return (
-		<div className="card abs-center">
+		<div className="card">
 			<h1 className="card-title">{`${name}, ${country}`}</h1>
 			<p className="card-text">
 				{temp}{' '}
