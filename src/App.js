@@ -1,6 +1,7 @@
 import React from 'react';
 import './App.css';
 import Form from './components/Form';
+import Card from './components/Card';
 
 class App extends React.Component {
 	constructor() {
@@ -50,7 +51,6 @@ class App extends React.Component {
 				cityWeatherData
 			);
 			this.setState({ cityWeatherData: processedCityWeatherData });
-			console.log(this.state.cityWeatherData);
 		} catch (err) {
 			console.log(err);
 		}
@@ -73,14 +73,17 @@ class App extends React.Component {
 	}
 
 	render() {
-		const { formData } = this.state;
+		const { cityWeatherData, formData } = this.state;
 
 		return (
-			<Form
-				data={formData}
-				handleInputChange={this.handleInputChange}
-				handleFormSubmit={this.handleFormSubmit}
-			/>
+			<div className="app">
+				<Form
+					data={formData}
+					handleInputChange={this.handleInputChange}
+					handleFormSubmit={this.handleFormSubmit}
+				/>
+				<Card data={cityWeatherData} />
+			</div>
 		);
 	}
 }

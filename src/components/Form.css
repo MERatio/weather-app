@@ -1,0 +1,46 @@
+:root {
+	--clouds: #ecf0f1;
+	--blue-1: #3498db;
+	--blue-2: #2980b9;
+}
+
+.weather-form {
+	display: flex;
+	position: absolute;
+	top: 10%;
+	left: 50%;
+	transform: translateX(-50%);
+}
+
+.weather-form-name {
+	font-size: 2rem;
+	color: #333;
+	padding: 1.6rem 2rem;
+	background-color: rgba(255, 255, 255, 0.4);
+	border: none;
+	border-bottom: 2px solid transparent;
+	border-radius: 5px;
+	transition: all 0.2s;
+}
+
+.weather-form-name:focus {
+	background-color: var(--clouds);
+	border-color: var(--blue-1);
+}
+
+.weather-form-submit {
+	max-width: 100%;
+	font-size: 2rem;
+	font-weight: 700;
+	color: #fff;
+	padding: 1.6rem 2rem;
+	background-color: var(--blue-1);
+	border: none;
+	border-radius: 5px;
+	cursor: pointer;
+	margin-left: 1rem;
+}
+
+.weather-form-submit:hover {
+	background-color: var(--blue-2);
+}
