@@ -12,7 +12,7 @@ function Form(props) {
 				className="weather-form-name"
 				value={data.name}
 				onChange={handleInputChange}
-				placeholder="City name"
+				placeholder="London,UK"
 			/>
 			<button type="submit" className="weather-form-submit">
 				Go
