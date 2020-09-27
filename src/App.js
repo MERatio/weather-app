@@ -3,6 +3,7 @@ import './App.css';
 import Form from './components/Form';
 import Card from './components/Card';
 import Spinner from './components/Spinner';
+import ErrorMessage from './components/ErrorMessage';
 
 class App extends React.Component {
 	constructor() {
@@ -14,6 +15,7 @@ class App extends React.Component {
 			},
 			scale: 'c',
 			isDataReady: false,
+			error: false,
 		};
 		this.getCityWeatherData = this.getCityWeatherData.bind(this);
 		this.processCityWeatherData = this.processCityWeatherData.bind(this);
@@ -49,7 +51,9 @@ class App extends React.Component {
 			const cityWeatherData = await response.json();
 			return cityWeatherData;
 		} catch (err) {
-			console.log(err);
+			setTimeout(() => {
+				this.setState({ error: true });
+			}, 500);
 		}
 	}
 
@@ -68,7 +72,7 @@ class App extends React.Component {
 
 	async setWeatherData(cityName) {
 		try {
-			this.setState({ isDataReady: false });
+			this.setState({ isDataReady: false, error: false });
 			const cityWeatherData = await this.getCityWeatherData(cityName);
 			const processedCityWeatherData = this.processCityWeatherData(
 				cityWeatherData
@@ -80,7 +84,9 @@ class App extends React.Component {
 				});
 			}, 500);
 		} catch (err) {
-			console.log(err);
+			setTimeout(() => {
+				this.setState({ error: true });
+			}, 500);
 		}
 	}
 
@@ -122,16 +128,22 @@ class App extends React.Component {
 	}
 
 	render() {
-		const { cityWeatherData, formData, scale, isDataReady } = this.state;
-		const output = isDataReady ? (
-			<Card
-				data={cityWeatherData}
-				scale={scale}
-				handleScaleChange={this.handleScaleChange}
-			/>
-		) : (
-			<Spinner />
-		);
+		const { cityWeatherData, formData, scale, isDataReady, error } = this.state;
+
+		let output;
+		if (error) {
+			output = <ErrorMessage />;
+		} else if (isDataReady) {
+			output = (
+				<Card
+					data={cityWeatherData}
+					scale={scale}
+					handleScaleChange={this.handleScaleChange}
+				/>
+			);
+		} else {
+			output = <Spinner />;
+		}
 
 		return (
 			<div className="app">
