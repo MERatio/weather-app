@@ -11,6 +11,9 @@ html {
 body {
 	box-sizing: border-box;
 	font-family: Arial;
+}
+
+.default-bg {
 	background: #2193b0; /* fallback for old browsers */
 	background: -webkit-linear-gradient(
 		to bottom,

@@ -26,6 +26,7 @@ class App extends React.Component {
 	}
 
 	componentDidMount() {
+		this._changeToDefaultBg();
 		this.setWeatherData('quezon city');
 	}
 
@@ -43,6 +44,30 @@ class App extends React.Component {
 		return rounded;
 	}
 
+	_changeToDefaultBg() {
+		const body = document.body;
+		body.style.background = '';
+		body.classList.add('default-bg');
+	}
+
+	async _changeBg(term) {
+		try {
+			const apiKey = process.env.REACT_APP_GIPHY_API_KEY;
+			const url = `https://api.giphy.com/v1/gifs/translate?api_key=${apiKey}&s=${term}`;
+			const response = await fetch(url, { mode: 'cors' });
+			const data = await response.json();
+			const imgUrl = data.data.images.original.url;
+			const body = document.body;
+			body.style.background = `url(${imgUrl}) fixed no-repeat`;
+			body.style.backgroundSize = 'cover';
+		} catch (err) {
+			setTimeout(() => {
+				this.setState({ error: true });
+				this._changeToDefaultBg();
+			}, 500);
+		}
+	}
+
 	async getCityWeatherData(cityName) {
 		try {
 			const apiKey = process.env.REACT_APP_OPENWEATHER_API_KEY;
@@ -53,6 +78,7 @@ class App extends React.Component {
 		} catch (err) {
 			setTimeout(() => {
 				this.setState({ error: true });
+				this._changeToDefaultBg();
 			}, 500);
 		}
 	}
@@ -82,10 +108,12 @@ class App extends React.Component {
 					cityWeatherData: processedCityWeatherData,
 					isDataReady: true,
 				});
+				this._changeBg(processedCityWeatherData.description);
 			}, 500);
 		} catch (err) {
 			setTimeout(() => {
 				this.setState({ error: true });
+				this._changeToDefaultBg();
 			}, 500);
 		}
 	}
