@@ -2,6 +2,9 @@
 
 const WEATHER_API_API_KEY = "7d3db2c9e6624ad8aed41548231611";
 
+const searchForm = document.getElementById("searchForm");
+const queryInput = searchForm.querySelector(".queryInput");
+
 function getDateStandardHour(date) {
   return new Intl.DateTimeFormat(undefined, {
     hour12: true,
@@ -45,11 +48,19 @@ async function fetchWeatherForecastData(query) {
   return weatherForecastData;
 }
 
-async function logWeatherData() {
-  const query = "london";
+async function logWeatherData(query) {
   const weatherForecastData = await fetchWeatherForecastData(query);
   const weatherData = processWeatherData(weatherForecastData);
   console.log(weatherData);
 }
 
-logWeatherData();
+function handleSearchFormSubmit(e) {
+  e.preventDefault();
+  const query = queryInput.value;
+  logWeatherData(query);
+  queryInput.value = "";
+}
+
+searchForm.addEventListener("submit", handleSearchFormSubmit);
+
+logWeatherData("london");
