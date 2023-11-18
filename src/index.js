@@ -37,17 +37,17 @@ function processWeatherData(weatherForecastData) {
   };
 }
 
-async function fetchWeatherForecastData(q) {
+async function fetchWeatherForecastData(query) {
   const res = await fetch(
-    `http://api.weatherapi.com/v1/forecast.json?key=${WEATHER_API_API_KEY}&q=${q}`,
+    `http://api.weatherapi.com/v1/forecast.json?key=${WEATHER_API_API_KEY}&q=${query}`,
   );
   const weatherForecastData = await res.json();
   return weatherForecastData;
 }
 
 async function logWeatherData() {
-  const q = "london";
-  const weatherForecastData = await fetchWeatherForecastData(q);
+  const query = "london";
+  const weatherForecastData = await fetchWeatherForecastData(query);
   const weatherData = processWeatherData(weatherForecastData);
   console.log(weatherData);
 }
