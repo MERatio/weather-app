@@ -1,33 +1,44 @@
 "use strict";
 
+import {
+  searchForm,
+  queryInput,
+  unitOfTempBtns,
+  updateActiveUnitOfTempBtn,
+  displayWeatherData,
+} from "./js/dom.js";
+import { fetchWeatherForecastData } from "./js/fetchWeather";
 import "./style.css";
 
-const WEATHER_API_API_KEY = "7d3db2c9e6624ad8aed41548231611";
+let unitOfTemp = "celcius";
+let weatherData;
 
-const searchForm = document.getElementById("searchForm");
-const queryInput = searchForm.querySelector(".queryInput");
-
-// Forecast data that is availbale is 3 days for free plan, which is what I'm using.
-async function fetchWeatherForecastData(query, days = 3) {
-  const res = await fetch(
-    `http://api.weatherapi.com/v1/forecast.json?key=${WEATHER_API_API_KEY}&q=${query}&days=${days}`,
-  );
-  const weatherForecastData = await res.json();
-  return weatherForecastData;
-}
-
-async function logWeatherData(query) {
-  const weatherForecastData = await fetchWeatherForecastData(query, 3);
-  console.log(weatherForecastData);
-}
-
-function handleSearchFormSubmit(e) {
+async function handleSearchFormSubmit(e) {
   e.preventDefault();
   const query = queryInput.value;
-  logWeatherData(query);
+  weatherData = await fetchWeatherForecastData(query, 3);
+  displayWeatherData(weatherData, unitOfTemp);
   queryInput.value = "";
 }
 
-searchForm.addEventListener("submit", handleSearchFormSubmit);
+function handleUnitOfTempBtnClick(e) {
+  const newUnitOfTemp = e.currentTarget.dataset.unitOfTemp;
+  if (newUnitOfTemp === unitOfTemp) {
+    return;
+  }
+  unitOfTemp = newUnitOfTemp;
+  updateActiveUnitOfTempBtn(unitOfTemp);
+  displayWeatherData(weatherData, unitOfTemp);
+}
 
-logWeatherData("london");
+async function init() {
+  searchForm.addEventListener("submit", handleSearchFormSubmit);
+  unitOfTempBtns.forEach((unitOfTempBtn) => {
+    unitOfTempBtn.addEventListener("click", handleUnitOfTempBtnClick);
+  });
+  weatherData = await fetchWeatherForecastData("lucban", 3);
+  updateActiveUnitOfTempBtn(unitOfTemp);
+  displayWeatherData(weatherData, unitOfTemp);
+}
+
+init();

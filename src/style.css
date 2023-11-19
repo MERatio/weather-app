@@ -2,3 +2,23 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@layer components {
+  .unit-of-temp-btn {
+    @apply outline-orange-400 hover:text-orange-600;
+  }
+
+  .unit-of-temp-btn.active {
+    @apply cursor-auto font-bold text-orange-600;
+  }
+
+  .icon-medium {
+    max-width: 80px;
+    height: auto;
+  }
+
+  .icon-small {
+    max-width: 50px;
+    height: auto;
+  }
+}
