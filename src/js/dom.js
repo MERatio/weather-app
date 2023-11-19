@@ -1,3 +1,5 @@
+const main = document.querySelector("main");
+const mainSpinnerContainer = document.querySelector(".mainSpinnerContainer");
 const searchForm = document.getElementById("searchForm");
 const queryInput = searchForm.querySelector(".queryInput");
 const locationHeader = document.querySelector(".locationHeader");
@@ -120,10 +122,22 @@ function displayWeatherData(weatherData, unitOfTemp) {
   );
 }
 
+function hideMainContentAndShowMainSpinner() {
+  main.classList.add("hidden");
+  mainSpinnerContainer.classList.remove("hidden");
+}
+
+function showMainAndHideMainSpinner() {
+  main.classList.remove("hidden");
+  mainSpinnerContainer.classList.add("hidden");
+}
+
 export {
   searchForm,
   queryInput,
   unitOfTempBtns,
   updateActiveUnitOfTempBtn,
   displayWeatherData,
+  hideMainContentAndShowMainSpinner,
+  showMainAndHideMainSpinner,
 };
