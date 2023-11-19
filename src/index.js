@@ -17,6 +17,9 @@ async function handleSearchFormSubmit(e) {
   e.preventDefault();
   const query = queryInput.value;
   weatherData = await fetchWeatherForecastData(query, 3);
+  if (weatherData.error) {
+    return window.alert(weatherData.error.message);
+  }
   displayWeatherData(weatherData, unitOfTemp);
   queryInput.value = "";
 }
@@ -37,6 +40,9 @@ async function init() {
     unitOfTempBtn.addEventListener("click", handleUnitOfTempBtnClick);
   });
   weatherData = await fetchWeatherForecastData("lucban", 3);
+  if (weatherData.error) {
+    return window.alert(weatherData.error.message);
+  }
   updateActiveUnitOfTempBtn(unitOfTemp);
   displayWeatherData(weatherData, unitOfTemp);
 }
