@@ -9,7 +9,7 @@ const currentHourConditionIcon = document.querySelector(
 const currentHourTempSpan = document.querySelector(".currentHourTempSpan");
 const unitOfTempBtns = document.querySelectorAll(".unitOfTempBtn");
 const currentDateHeader = document.querySelector(".currentDateHeader");
-const conditionText = document.querySelector(".conditionText");
+const conditionP = document.querySelector(".conditionP");
 const currentHourChanceOfRainSpan = document.querySelector(
   ".currentHourChanceOfRainSpan",
 );
@@ -104,7 +104,7 @@ function displayCurrentHourData(currentHourData, unitOfTemp, localTimeDate) {
   currentDateHeader.textContent = `${getDayName(
     localTimeDate,
   )} ${getStandardHour(localTimeDate)}`;
-  conditionText.textContent = currentHourData.condition.text;
+  conditionP.textContent = currentHourData.condition.text;
   currentHourChanceOfRainSpan.textContent =
     currentHourData.chance_of_rain + "%";
   currentHourHumiditySpan.textContent = currentHourData.humidity + "%";
