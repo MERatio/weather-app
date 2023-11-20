@@ -75,6 +75,20 @@ function createHourForecastItem(hourForecastData, unitOfTemp) {
   return hourForecastItem;
 }
 
+function displayHoursForecastItems(
+  hour24ForecastDataExceptCurrentHour,
+  unitOfTemp,
+) {
+  hourForecastList.replaceChildren();
+  for (const hourForecastData of hour24ForecastDataExceptCurrentHour) {
+    const hourForecastItem = createHourForecastItem(
+      hourForecastData,
+      unitOfTemp,
+    );
+    hourForecastList.append(hourForecastItem);
+  }
+}
+
 function displayCurrentHourData(currentHourData, unitOfTemp, localTimeDate) {
   currentHourConditionIcon.src = `https:${currentHourData.condition.icon}`;
   currentHourConditionIcon.alt = currentHourData.condition.text;
@@ -86,40 +100,39 @@ function displayCurrentHourData(currentHourData, unitOfTemp, localTimeDate) {
   conditionText.textContent = currentHourData.condition.text;
 }
 
-function displayTodayHourForecastData(
-  todayHourForecastData,
-  unitOfTemp,
-  localTimeDate,
+function get24HourForecastDataExceptCurrentHour(
+  todayHoursForecastDataExceptCurrentHour,
+  tomorrowHoursForecastData,
 ) {
-  const currentHour = localTimeDate.getHours();
-  const currentHourData = todayHourForecastData[currentHour];
-  const todayHourForeCastDataExceptCurrentHour = todayHourForecastData.slice([
-    currentHour + 1,
-  ]);
-  displayCurrentHourData(currentHourData, unitOfTemp, localTimeDate);
-  hourForecastList.replaceChildren();
-  if (todayHourForeCastDataExceptCurrentHour.length === 0) {
-    return;
+  let result = [...todayHoursForecastDataExceptCurrentHour];
+  for (const hourForecastData of tomorrowHoursForecastData) {
+    if (result.length >= 24) {
+      break;
+    }
+    result = [...result, hourForecastData];
   }
-  for (const hourForecastData of todayHourForeCastDataExceptCurrentHour) {
-    const hourForecastItem = createHourForecastItem(
-      hourForecastData,
-      unitOfTemp,
-    );
-    hourForecastList.append(hourForecastItem);
-  }
+
+  return result;
 }
 
 function displayWeatherData(weatherData, unitOfTemp) {
   const { name, country, localtime } = weatherData.location;
-  const todayHourForecastData = weatherData.forecast.forecastday[0].hour;
   const localTimeDate = new Date(localtime);
-  locationHeader.textContent = `${name}, ${country}`;
-  displayTodayHourForecastData(
-    todayHourForecastData,
-    unitOfTemp,
-    localTimeDate,
+  const todayHoursForecastData = weatherData.forecast.forecastday[0].hour;
+  const currentHour = localTimeDate.getHours();
+  const currentHourData = todayHoursForecastData[currentHour];
+  const todayHoursForecastDataExceptCurrentHour = todayHoursForecastData.slice(
+    currentHour + 1,
   );
+  const tomorrowHoursForecastData = weatherData.forecast.forecastday[1].hour;
+  const hour24ForecastDataExceptCurrentHour =
+    get24HourForecastDataExceptCurrentHour(
+      todayHoursForecastDataExceptCurrentHour,
+      tomorrowHoursForecastData,
+    );
+  locationHeader.textContent = `${name}, ${country}`;
+  displayCurrentHourData(currentHourData, unitOfTemp, localTimeDate);
+  displayHoursForecastItems(hour24ForecastDataExceptCurrentHour, unitOfTemp);
 }
 
 function hideMainContentAndShowMainSpinner() {
