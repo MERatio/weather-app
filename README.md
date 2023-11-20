@@ -13,6 +13,7 @@ Weather forecast site using a weather API.
 
 - For more information visit [The Odin Project's web page about this project](https://www.theodinproject.com/lessons/node-path-javascript-weather-app/).
 - [WeatherAPI](https://www.weatherapi.com/)
+- [Spinner made by Tobias Ahlin](https://tobiasahlin.com/spinkit/).
 
 ## Demo
 
