@@ -82,7 +82,7 @@ function createHourForecastItem(hourForecastData, unitOfTemp) {
   return hourForecastItem;
 }
 
-function displayHoursForecastItems(
+function displayHourForecastItems(
   hour24ForecastDataExceptCurrentHour,
   unitOfTemp,
 ) {
@@ -147,7 +147,7 @@ function displayWeatherData(weatherData, unitOfTemp) {
     );
   locationHeader.textContent = `${name}, ${country}`;
   displayCurrentHourData(currentHourData, unitOfTemp, localTimeDate);
-  displayHoursForecastItems(hour24ForecastDataExceptCurrentHour, unitOfTemp);
+  displayHourForecastItems(hour24ForecastDataExceptCurrentHour, unitOfTemp);
 }
 
 function hideMainContentAndShowMainSpinner() {
