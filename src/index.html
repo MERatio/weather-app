@@ -39,42 +39,38 @@
     </header>
     <main class="container mx-auto hidden p-2">
       <h1 class="locationHeader text-center text-2xl font-bold"></h1>
-      <div class="mt-2 grid grid-cols-12">
-        <div
-          class="col-span-full grid grid-cols-2 items-center lg:col-span-2 lg:grid-cols-1"
-        >
-          <section class="flex flex-col items-center">
-            <img class="currentHourConditionIcon icon-medium" />
-            <p class="flex items-center">
-              <span class="currentHourTempSpan text-2xl font-bold"></span>
-              <span class="unit ml-0.5">
-                <button
-                  type="button"
-                  class="unitOfTempBtn unit-of-temp-btn"
-                  data-unit-of-temp="celcius"
-                >
-                  &#176;C
-                </button>
-                <span>|</span>
-                <button
-                  type="button"
-                  class="unitOfTempBtn unit-of-temp-btn"
-                  data-unit-of-temp="fahrenheit"
-                >
-                  &#176;F
-                </button>
-              </span>
-            </p>
-          </section>
-          <section class="text-center">
-            <p class="currentDateHeader"></p>
-            <p class="conditionText"></p>
-          </section>
-        </div>
-        <ul
-          class="hourForecastList col-span-full mt-2 flex items-center gap-6 overflow-auto border-y border-solid border-slate-200 py-3 lg:col-span-10 lg:mt-0 lg:gap-10"
-        ></ul>
+      <div class="mt-2 flex justify-center gap-8">
+        <section class="flex flex-col items-center">
+          <img class="currentHourConditionIcon icon-medium" />
+          <p class="flex items-center">
+            <span class="currentHourTempSpan text-2xl font-bold"></span>
+            <span class="unit ml-0.5">
+              <button
+                type="button"
+                class="unitOfTempBtn unit-of-temp-btn"
+                data-unit-of-temp="celcius"
+              >
+                &#176;C
+              </button>
+              <span>|</span>
+              <button
+                type="button"
+                class="unitOfTempBtn unit-of-temp-btn"
+                data-unit-of-temp="fahrenheit"
+              >
+                &#176;F
+              </button>
+            </span>
+          </p>
+        </section>
+        <section class="text-center text-slate-600">
+          <h2 class="currentDateHeader"></h2>
+          <p class="conditionText"></p>
+        </section>
       </div>
+      <ul
+        class="hourForecastList col-span-full mt-2 flex items-center gap-6 overflow-auto border-y border-solid border-slate-200 py-3 lg:col-span-10 lg:mt-0 lg:gap-10"
+      ></ul>
     </main>
   </body>
 </html>
