@@ -10,6 +10,13 @@ const currentHourTempSpan = document.querySelector(".currentHourTempSpan");
 const unitOfTempBtns = document.querySelectorAll(".unitOfTempBtn");
 const currentDateHeader = document.querySelector(".currentDateHeader");
 const conditionText = document.querySelector(".conditionText");
+const currentHourChanceOfRainSpan = document.querySelector(
+  ".currentHourChanceOfRainSpan",
+);
+const currentHourHumiditySpan = document.querySelector(
+  ".currentHourHumiditySpan",
+);
+const currentHourWindSpan = document.querySelector(".currentHourWindSpan");
 const hourForecastList = document.querySelector(".hourForecastList");
 
 function getUnitOfTempSymbol(unitOfTemp) {
@@ -98,6 +105,14 @@ function displayCurrentHourData(currentHourData, unitOfTemp, localTimeDate) {
     localTimeDate,
   )} ${getStandardHour(localTimeDate)}`;
   conditionText.textContent = currentHourData.condition.text;
+  currentHourChanceOfRainSpan.textContent =
+    currentHourData.chance_of_rain + "%";
+  currentHourHumiditySpan.textContent = currentHourData.humidity + "%";
+  if (unitOfTemp === "celcius") {
+    currentHourWindSpan.textContent = currentHourData.wind_kph + " km/h";
+  } else {
+    currentHourWindSpan.textContent = currentHourData.wind_mph + " mph";
+  }
 }
 
 function get24HourForecastDataExceptCurrentHour(

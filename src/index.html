@@ -39,7 +39,7 @@
     </header>
     <main class="container mx-auto hidden p-2">
       <h1 class="locationHeader text-center text-2xl font-bold"></h1>
-      <div class="mt-2 flex justify-center gap-8">
+      <div class="mt-2 flex items-center justify-center gap-8">
         <section class="flex flex-col items-center">
           <img class="currentHourConditionIcon icon-medium" />
           <p class="flex items-center">
@@ -63,9 +63,14 @@
             </span>
           </p>
         </section>
-        <section class="text-center text-slate-600">
+        <section class="text-center text-end text-slate-600">
           <h2 class="currentDateHeader"></h2>
           <p class="conditionText"></p>
+          <p>
+            Change of rain: <span class="currentHourChanceOfRainSpan"></span>
+          </p>
+          <p>Humidity: <span class="currentHourHumiditySpan"></span></p>
+          <p>Wind: <span class="currentHourWindSpan"></span></p>
         </section>
       </div>
       <ul
