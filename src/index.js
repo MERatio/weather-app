@@ -39,7 +39,7 @@ async function init() {
   unitOfTempBtns.forEach((unitOfTempBtn) => {
     unitOfTempBtn.addEventListener("click", handleUnitOfTempBtnClick);
   });
-  weatherData = await fetchWeatherForecastData("lucban", 3);
+  weatherData = await fetchWeatherForecastData("London", 3);
   if (weatherData.error) {
     return window.alert(weatherData.error.message);
   }
