@@ -132,7 +132,7 @@ const WEATHER_API_API_KEY = "7d3db2c9e6624ad8aed41548231611";
 async function fetchWeatherForecastData(query) {
   let days = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 3;
   hideMainContentAndShowMainSpinner();
-  const res = await fetch(`http://api.weatherapi.com/v1/forecast.json?key=${WEATHER_API_API_KEY}&q=${query}&days=${days}`);
+  const res = await fetch(`https://api.weatherapi.com/v1/forecast.json?key=${WEATHER_API_API_KEY}&q=${query}&days=${days}`);
   const weatherForecastData = await res.json();
   showMainAndHideMainSpinner();
   return weatherForecastData;
