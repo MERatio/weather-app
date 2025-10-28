@@ -3,12 +3,58 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Wether App</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100..900;1,100..900&display=swap"
+      rel="stylesheet"
+    />
+    <title>Weather App</title>
   </head>
   <body>
-    <form class="js-search-form">
-      <input type="text" class="js-location-input" />
-      <button type="submit">Search</button>
-    </form>
+    <header class="main-header">
+      <h1 class="main-heading">Weather App</h1>
+      <form class="js-search-form">
+        <input
+          type="text"
+          placeholder="France"
+          class="location-input js-location-input"
+          id="location-input"
+        />
+        <button type="submit" class="search-form-submit-btn">Search</button>
+      </form>
+    </header>
+    <div class="container">
+      <main class="main">
+        <h3 class="location js-location"></h3>
+        <div class="current-weather">
+          <div class="current-weather-left">
+            <h4
+              class="current-weather-day-time js-current-weather-day-time"
+            ></h4>
+            <div class="current-weather-icon-temp-feels-like">
+              <img class="current-weather-icon js-current-weather-icon" />
+              <div>
+                <p class="current-weather-temp js-current-weather-temp"></p>
+                <p class="secondary-text">
+                  Feels like
+                  <span class="js-current-weather-feels-like"></span>
+                </p>
+              </div>
+            </div>
+          </div>
+          <div class="current-weather-right secondary-text">
+            <p
+              class="current-weather-condition js-current-weather-condition"
+            ></p>
+            <p>
+              Precipitation: <span class="js-current-weather-precip"></span>
+            </p>
+            <p>Humidity: <span class="js-current-weather-humidity"></span></p>
+            <p>Wind: <span class="js-current-weather-wind"></span></p>
+          </div>
+        </div>
+      </main>
+    </div>
   </body>
 </html>
