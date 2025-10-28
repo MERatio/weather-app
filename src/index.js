@@ -1,25 +1,25 @@
 import './style.css';
 
-const searchForm = document.querySelector('.js-search-form');
+const searchFormEl = document.querySelector('.js-search-form');
 const locationEl = document.querySelector('.js-location');
-const currentWeatherDayTime = document.querySelector(
+const currentWeatherDayTimeEl = document.querySelector(
   '.js-current-weather-day-time',
 );
 const currentWeatherIconEl = document.querySelector('.js-current-weather-icon');
 const currentWeatherTempEl = document.querySelector('.js-current-weather-temp');
-const currentWeatherFeelsLike = document.querySelector(
+const currentWeatherFeelsLikeEl = document.querySelector(
   '.js-current-weather-feels-like',
 );
-const currentWeatherCondition = document.querySelector(
+const currentWeatherConditionEl = document.querySelector(
   '.js-current-weather-condition',
 );
-const currentWeatherPrecip = document.querySelector(
+const currentWeatherPrecipEl = document.querySelector(
   '.js-current-weather-precip',
 );
-const currentWeatherHumidity = document.querySelector(
+const currentWeatherHumidityEl = document.querySelector(
   '.js-current-weather-humidity',
 );
-const currentWeatherWind = document.querySelector('.js-current-weather-wind');
+const currentWeatherWindEl = document.querySelector('.js-current-weather-wind');
 const incomingHoursCardsEl = document.querySelector('.js-incoming-hours-cards');
 const incomingDaysCardsEl = document.querySelector('.js-incoming-days-cards');
 
@@ -137,7 +137,7 @@ async function displayIncomingDaysData(weatherData) {
   }
 }
 
-async function displayWeatherData(weatherData) {
+async function displayCurrentData(weatherData) {
   const currentDayName = getDayName(weatherData.days[0].datetime, false);
   const currentTime = formatToAmPm(
     weatherData.currentConditions.datetime,
@@ -148,25 +148,28 @@ async function displayWeatherData(weatherData) {
   );
 
   locationEl.textContent = weatherData.resolvedAddress;
-  currentWeatherDayTime.textContent = `${currentDayName} ${currentTime}`;
+  currentWeatherDayTimeEl.textContent = `${currentDayName} ${currentTime}`;
   currentWeatherIconEl.src = currentWeatherIconUrl;
   currentWeatherIconEl.alt = weatherData.currentConditions.conditions;
-  currentWeatherTempEl.textContent = `${weatherData.currentConditions.temp}°C`;
-  currentWeatherFeelsLike.textContent = `${weatherData.currentConditions.feelslike}°C`;
-  currentWeatherCondition.textContent =
+  currentWeatherTempEl.textContent = `${weatherData.currentConditions.temp}°`;
+  currentWeatherFeelsLikeEl.textContent = `${weatherData.currentConditions.feelslike}°`;
+  currentWeatherConditionEl.textContent =
     weatherData.currentConditions.conditions;
-  currentWeatherPrecip.textContent = `${weatherData.currentConditions.precipprob}%`;
-  currentWeatherHumidity.textContent = `${weatherData.currentConditions.humidity}%`;
-  currentWeatherWind.textContent = `${weatherData.currentConditions.windspeed} km/h`;
+  currentWeatherPrecipEl.textContent = `${weatherData.currentConditions.precipprob}%`;
+  currentWeatherHumidityEl.textContent = `${weatherData.currentConditions.humidity}%`;
+  currentWeatherWindEl.textContent = `${weatherData.currentConditions.windspeed} km/h`;
+}
 
+async function displayWeatherData(weatherData) {
+  await displayCurrentData(weatherData);
   await displayIncomingHoursData(weatherData);
   await displayIncomingDaysData(weatherData);
 }
 
-searchForm.addEventListener('submit', async (e) => {
+searchFormEl.addEventListener('submit', async (e) => {
   e.preventDefault();
 
-  const locationInput = searchForm.querySelector('.js-location-input');
+  const locationInput = searchFormEl.querySelector('.js-location-input');
   const location = locationInput.value.trim();
 
   const weatherData = await getWeatherData(location);
