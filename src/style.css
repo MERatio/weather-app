@@ -72,6 +72,12 @@ button {
   margin-top: 10px;
 }
 
+.location-menu-btn-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
 .current-weather {
   margin-top: 10px;
   display: flex;

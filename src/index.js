@@ -1,6 +1,11 @@
+import './js/menu-button.js';
 import './style.css';
+import './css/menu-button.css';
 
+let location = '';
+let scale = 'celsius';
 const searchFormEl = document.querySelector('.js-search-form');
+const scaleRadioBtns = document.querySelectorAll('input[name="scale"]');
 const locationEl = document.querySelector('.js-location');
 const currentWeatherDayTimeEl = document.querySelector(
   '.js-current-weather-day-time',
@@ -23,9 +28,12 @@ const currentWeatherWindEl = document.querySelector('.js-current-weather-wind');
 const incomingHoursCardsEl = document.querySelector('.js-incoming-hours-cards');
 const incomingDaysCardsEl = document.querySelector('.js-incoming-days-cards');
 
-async function getWeatherData(location) {
+async function getWeatherData(location, scale) {
+  console.log(scale);
+
+  const unitGroup = scale === 'celsius' ? 'metric' : 'us';
   const API_KEY = 'PGBQ5TKSZ5E7BP2KZ2YTFXPHU';
-  const apiEndpoint = `https://weather.visualcrossing.com/VisualCrossingWebServices/rest/services/timeline/${location}?unitGroup=metric&key=${API_KEY}&contentType=json`;
+  const apiEndpoint = `https://weather.visualcrossing.com/VisualCrossingWebServices/rest/services/timeline/${location}?unitGroup=${unitGroup}&key=${API_KEY}&contentType=json`;
   try {
     const response = await fetch(apiEndpoint);
     if (!response.ok) {
@@ -81,6 +89,8 @@ async function displayIncomingHoursData(weatherData) {
     weatherData.days[0].hours,
   );
 
+  incomingHoursCardsEl.replaceChildren();
+
   for (const incomingHourData of incomingHoursData) {
     const cardEl = document.createElement('li');
     cardEl.classList.add('card');
@@ -112,6 +122,8 @@ async function displayIncomingHoursData(weatherData) {
 
 async function displayIncomingDaysData(weatherData) {
   const incomingDaysData = weatherData.days.slice(1);
+
+  incomingDaysCardsEl.replaceChildren();
 
   for (const incomingDayData of incomingDaysData) {
     const cardEl = document.createElement('li');
@@ -157,7 +169,7 @@ async function displayCurrentData(weatherData) {
     weatherData.currentConditions.conditions;
   currentWeatherPrecipEl.textContent = `${weatherData.currentConditions.precipprob}%`;
   currentWeatherHumidityEl.textContent = `${weatherData.currentConditions.humidity}%`;
-  currentWeatherWindEl.textContent = `${weatherData.currentConditions.windspeed} km/h`;
+  currentWeatherWindEl.textContent = `${weatherData.currentConditions.windspeed} ${scale === 'celsius' ? 'km/h' : 'mph'}`;
 }
 
 async function displayWeatherData(weatherData) {
@@ -166,16 +178,31 @@ async function displayWeatherData(weatherData) {
   await displayIncomingDaysData(weatherData);
 }
 
-searchFormEl.addEventListener('submit', async (e) => {
-  e.preventDefault();
-
-  const locationInput = searchFormEl.querySelector('.js-location-input');
-  const location = locationInput.value.trim();
-
-  const weatherData = await getWeatherData(location);
+async function getAndDisplayWeatherData(location, scale) {
+  const weatherData = await getWeatherData(location, scale);
   if (!weatherData) {
     return;
   }
 
   await displayWeatherData(weatherData);
+}
+
+searchFormEl.addEventListener('submit', async (e) => {
+  e.preventDefault();
+
+  const locationInput = searchFormEl.querySelector('.js-location-input');
+  location = locationInput.value.trim();
+
+  await getAndDisplayWeatherData(location, scale);
 });
+
+for (const scaleRadioBtn of scaleRadioBtns) {
+  scaleRadioBtn.addEventListener('change', function () {
+    if (this.checked) {
+      scale = this.value;
+      if (location) {
+        getAndDisplayWeatherData(location, scale);
+      }
+    }
+  });
+}

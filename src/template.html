@@ -26,7 +26,41 @@
     </header>
     <div class="container">
       <main class="main">
-        <h3 class="location js-location"></h3>
+        <div class="location-menu-btn-container">
+          <h3 class="location js-location"></h3>
+          <div class="menu-btn-container">
+            <button class="menu-btn js-menu-btn">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960">
+                <path
+                  d="M480-160q-33 0-56.5-23.5T400-240q0-33 23.5-56.5T480-320q33 0 56.5 23.5T560-240q0 33-23.5 56.5T480-160Zm0-240q-33 0-56.5-23.5T400-480q0-33 23.5-56.5T480-560q33 0 56.5 23.5T560-480q0 33-23.5 56.5T480-400Zm0-240q-33 0-56.5-23.5T400-720q0-33 23.5-56.5T480-800q33 0 56.5 23.5T560-720q0 33-23.5 56.5T480-640Z"
+                />
+              </svg>
+            </button>
+            <div class="menu js-menu">
+              <div class="scale-radios-container">
+                <div class="radio-label-container">
+                  <input
+                    type="radio"
+                    name="scale"
+                    id="celsius"
+                    value="celsius"
+                    checked
+                  />
+                  <label for="celsius">Celsius</label>
+                </div>
+                <div class="radio-label-container">
+                  <input
+                    type="radio"
+                    name="scale"
+                    id="fahrenheit"
+                    value="fahrenheit"
+                  />
+                  <label for="fahrenheit">Fahrenheit</label>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
         <section class="current-weather">
           <div class="current-weather-left">
             <h4
