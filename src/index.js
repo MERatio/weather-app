@@ -4,7 +4,8 @@ import './css/menu-button.css';
 
 let location = '';
 let scale = 'celsius';
-const searchFormEl = document.querySelector('.js-search-form');
+const searchForm = document.querySelector('.js-search-form');
+const locationInput = searchForm.querySelector('.js-location-input');
 const scaleRadioBtns = document.querySelectorAll('input[name="scale"]');
 const locationEl = document.querySelector('.js-location');
 const currentWeatherDayTimeEl = document.querySelector(
@@ -29,8 +30,6 @@ const incomingHoursCardsEl = document.querySelector('.js-incoming-hours-cards');
 const incomingDaysCardsEl = document.querySelector('.js-incoming-days-cards');
 
 async function getWeatherData(location, scale) {
-  console.log(scale);
-
   const unitGroup = scale === 'celsius' ? 'metric' : 'us';
   const API_KEY = 'PGBQ5TKSZ5E7BP2KZ2YTFXPHU';
   const apiEndpoint = `https://weather.visualcrossing.com/VisualCrossingWebServices/rest/services/timeline/${location}?unitGroup=${unitGroup}&key=${API_KEY}&contentType=json`;
@@ -77,6 +76,35 @@ async function getWeatherIconUrl(iconName) {
   }
 }
 
+async function displayIncomingDaysData(weatherData) {
+  const incomingDaysData = weatherData.days.slice(1);
+
+  incomingDaysCardsEl.replaceChildren();
+
+  for (const incomingDayData of incomingDaysData) {
+    const cardEl = document.createElement('li');
+    cardEl.classList.add('card');
+
+    const cardDayEl = document.createElement('p');
+    cardDayEl.classList.add('card-title');
+    cardDayEl.textContent = getDayName(incomingDayData.datetime, true);
+    cardEl.appendChild(cardDayEl);
+
+    const cardIconEl = document.createElement('img');
+    cardIconEl.classList.add('card-icon');
+    cardIconEl.src = await getWeatherIconUrl(incomingDayData.icon);
+    cardIconEl.alt = incomingDayData.conditions;
+    cardEl.appendChild(cardIconEl);
+
+    const cardTempEl = document.createElement('p');
+    cardTempEl.classList.add('card-temp');
+    cardTempEl.textContent = `${incomingDayData.temp}°`;
+    cardEl.appendChild(cardTempEl);
+
+    incomingDaysCardsEl.appendChild(cardEl);
+  }
+}
+
 async function displayIncomingHoursData(weatherData) {
   function extractIncomingHoursData(currentEpoch, hoursData) {
     return hoursData.filter(
@@ -120,35 +148,6 @@ async function displayIncomingHoursData(weatherData) {
   }
 }
 
-async function displayIncomingDaysData(weatherData) {
-  const incomingDaysData = weatherData.days.slice(1);
-
-  incomingDaysCardsEl.replaceChildren();
-
-  for (const incomingDayData of incomingDaysData) {
-    const cardEl = document.createElement('li');
-    cardEl.classList.add('card');
-
-    const cardDayEl = document.createElement('p');
-    cardDayEl.classList.add('card-title');
-    cardDayEl.textContent = getDayName(incomingDayData.datetime, true);
-    cardEl.appendChild(cardDayEl);
-
-    const cardIconEl = document.createElement('img');
-    cardIconEl.classList.add('card-icon');
-    cardIconEl.src = await getWeatherIconUrl(incomingDayData.icon);
-    cardIconEl.alt = incomingDayData.conditions;
-    cardEl.appendChild(cardIconEl);
-
-    const cardTempEl = document.createElement('p');
-    cardTempEl.classList.add('card-temp');
-    cardTempEl.textContent = `${incomingDayData.temp}°`;
-    cardEl.appendChild(cardTempEl);
-
-    incomingDaysCardsEl.appendChild(cardEl);
-  }
-}
-
 async function displayCurrentData(weatherData) {
   const currentDayName = getDayName(weatherData.days[0].datetime, false);
   const currentTime = formatToAmPm(
@@ -187,10 +186,9 @@ async function getAndDisplayWeatherData(location, scale) {
   await displayWeatherData(weatherData);
 }
 
-searchFormEl.addEventListener('submit', async (e) => {
+searchForm.addEventListener('submit', async (e) => {
   e.preventDefault();
 
-  const locationInput = searchFormEl.querySelector('.js-location-input');
   location = locationInput.value.trim();
 
   await getAndDisplayWeatherData(location, scale);
