@@ -6,8 +6,12 @@ let location = '';
 let scale = 'celsius';
 const searchForm = document.querySelector('.js-search-form');
 const locationInput = searchForm.querySelector('.js-location-input');
-const scaleRadioBtns = document.querySelectorAll('input[name="scale"]');
+const loadingSpinnerContainer = document.querySelector(
+  '.js-loading-spinner-container',
+);
+const mainEl = document.querySelector('.js-main');
 const locationEl = document.querySelector('.js-location');
+const scaleRadioBtns = document.querySelectorAll('input[name="scale"]');
 const currentWeatherDayTimeEl = document.querySelector(
   '.js-current-weather-day-time',
 );
@@ -178,12 +182,18 @@ async function displayWeatherData(weatherData) {
 }
 
 async function getAndDisplayWeatherData(location, scale) {
+  loadingSpinnerContainer.style.display = 'block';
+  mainEl.style.display = 'none';
+
   const weatherData = await getWeatherData(location, scale);
   if (!weatherData) {
     return;
   }
 
   await displayWeatherData(weatherData);
+
+  loadingSpinnerContainer.style.display = 'none';
+  mainEl.style.display = 'block';
 }
 
 searchForm.addEventListener('submit', async (e) => {
