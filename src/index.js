@@ -2,7 +2,7 @@ import './js/menu-button.js';
 import './style.css';
 import './css/menu-button.css';
 
-let location = '';
+let location = 'France';
 let scale = 'celsius';
 const searchForm = document.querySelector('.js-search-form');
 const locationInput = searchForm.querySelector('.js-location-input');
@@ -196,6 +196,22 @@ async function getAndDisplayWeatherData(location, scale) {
   mainEl.style.display = 'block';
 }
 
+async function getUserLocationFromIp() {
+  try {
+    const response = await fetch('https://ipapi.co/json');
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    console.error(error.message);
+  }
+}
+
+async function displayUserWeatherData() {
+  const { city, country_name } = await getUserLocationFromIp();
+  location = `${city} ${country_name}`;
+  await getAndDisplayWeatherData(location, scale);
+}
+
 searchForm.addEventListener('submit', async (e) => {
   e.preventDefault();
 
@@ -214,3 +230,5 @@ for (const scaleRadioBtn of scaleRadioBtns) {
     }
   });
 }
+
+displayUserWeatherData();
